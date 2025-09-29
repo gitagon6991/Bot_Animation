@@ -1,37 +1,70 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // List of images and info in Logos folder
+    // List of all 40 images from the Logos folder
     const cardData = [
-        {
-            img: 'Logos/gemini-2.5-pro-tts-logo.png',
-            title: 'Gemini-2.5-Pro-TTS',
-            desc: 'Google’s highest‑quality text‑to‑speech model preview...'
-        },
-        {
-            img: 'Logos/sfx-generator-ml-logo.png',
-            title: 'SFX-Generator-ML',
-            desc: 'Generate lifelike sound effects using text prompts...'
-        },
-        {
-            img: 'Logos/mistral-medium-3.1-logo.png',
-            title: 'Mistral-Medium-3.1',
-            desc: 'A high-performance, enterprise-grade language model...'
-        }
+        "AI-Audio-Studio.jpeg",
+        "Amazon-Nova-Canvas.jpeg",
+        "Amazon-Nova-Reel-11.jpeg",
+        "Bagoodex-Web-Search.jpeg",
+        "DeepClaude.jpeg",
+        "DeepSeek-Prover-V2.jpeg",
+        "DeepSeek-V3-old.jpeg",
+        "Deepgram-Nova-3.jpeg",
+        "Empirio-Search.jpeg",
+        "Gemini-25-Flash-TTS.jpeg",
+        "Gemini-25-Pro-TTS.jpeg",
+        "Gemma-3-27B.jpeg",
+        "Janus-Pro-DeepSeek.jpeg",
+        "K2-Think.jpeg",
+        "Linkup-Deep-Search.jpeg",
+        "Linkup-Standard.jpeg",
+        "Lyria-2.jpeg",
+        "Magistral-Medium-2506-Thinking.jpeg",
+        "Midjourney-Create.jpeg",
+        "Mistral-Medium-3.jpeg",
+        "Mistral-Medium-31.jpeg",
+        "Mistral-Small-31.jpeg",
+        "Murfai.jpeg",
+        "Nova-Lite-10.jpeg",
+        "Nova-Micro-10.jpeg",
+        "Nova-Premier-10.jpeg",
+        "Nova-Pro-10.jpeg",
+        "OpenAI-audio-to-text.jpeg",
+        "Perplexity-Deep-Research.jpeg",
+        "Perplexity-R1-1776.jpeg",
+        "Perplexity-Sonar-Pro.jpeg",
+        "Perplexity-Sonar-Rsn-Pro.jpeg",
+        "Perplexity-Sonar-Rsn.jpeg",
+        "Perplexity-Sonar.jpeg",
+        "Phi-4.jpeg",
+        "Qwen-3-Max.jpeg",
+        "SFX-Generator-ML.jpeg",
+        "Stable-Audio-20.jpeg",
+        "Stable-Audio-25.jpeg",
+        "Video-and-Sound.jpeg"
     ];
+
+    // Generate title from filename (remove .jpeg, dashes to spaces)
+    function filenameToTitle(filename) {
+        return filename
+            .replace(/\.jpeg$/i, '')
+            .replace(/-/g, ' ')
+            .replace(/\b([a-z])/g, (m) => m.toUpperCase());
+    }
 
     const container = document.querySelector('.card-stack-container');
     let cards = [];
 
-    // Create cards dynamically
+    // Create cards dynamically for all images
     function createCards() {
         container.innerHTML = '';
-        cardData.forEach((data, i) => {
+        cardData.forEach((filename, i) => {
             const card = document.createElement('div');
             card.className = 'card';
             card.dataset.index = i;
             card.innerHTML = `
-                <img src="${data.img}" alt="${data.title} Logo">
-                <h2>${data.title}</h2>
-                <p>${data.desc}</p>
+                <img src="Logos/${filename}" alt="${filenameToTitle(filename)} Logo">
+                <h2>${filenameToTitle(filename)}</h2>
+                <p></p>
             `;
             container.appendChild(card);
         });
@@ -81,17 +114,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             // Move the swiped card to the end of the array for looping
-            container.appendChild(topCard); // DOM order
-            cards.push(cards.shift()); // JS array order
+            container.appendChild(topCard);
+            cards.push(cards.shift());
 
             // Reset transform so it can animate in again
             topCard.style.transition = 'none';
             topCard.style.transform = '';
-            void topCard.offsetWidth; // force reflow
+            void topCard.offsetWidth;
             topCard.style.transition = '';
 
             updateCardStack();
-        }, 400); // Match transition duration
+        }, 400);
     }
 
     // Initialize
