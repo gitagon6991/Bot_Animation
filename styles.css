@@ -1,0 +1,55 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #111;
+    overflow: hidden;
+}
+
+.card-stack-container {
+    /* 1. Establish the 3D perspective for depth */
+    perspective: 1000px;
+    position: relative;
+    width: 300px;
+    height: 400px;
+}
+
+.card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    box-sizing: border-box;
+    cursor: grab;
+    user-select: none;
+    
+    /* 2. Enable CSS transitions for smooth movement/scaling */
+    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+/* 3. Initial Stacking Transforms (using CSS) */
+/* The JavaScript below will override this with dynamic classes */
+
+/* .card[data-index="0"] {
+    transform: translateZ(0) scale(1);
+}
+
+.card[data-index="1"] {
+    transform: translateZ(-20px) scale(0.95);
+}
+
+.card[data-index="2"] {
+    transform: translateZ(-40px) scale(0.90);
+} */
