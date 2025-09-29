@@ -43,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
         "Video-and-Sound.jpeg"
     ];
 
-    // Generate title from filename (remove .jpeg, dashes to spaces)
     function filenameToTitle(filename) {
         return filename
             .replace(/\.jpeg$/i, '')
@@ -54,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.querySelector('.card-stack-container');
     let cards = [];
 
-    // Create cards dynamically for all images
     function createCards() {
         container.innerHTML = '';
         cardData.forEach((filename, i) => {
@@ -65,10 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="card-inner">
                     <div class="card-front">
                         <img src="Logos/${filename}" alt="${filenameToTitle(filename)} Logo">
-                        <h2>${filenameToTitle(filename)}</h2>
+                        <div class="card-title">${filenameToTitle(filename)}</div>
                     </div>
                     <div class="card-back">
-                        <p>${filenameToTitle(filename)}</p>
+                        <div class="card-title">${filenameToTitle(filename)}</div>
                     </div>
                 </div>
             `;
@@ -128,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
             handleSwipe({ currentTarget: topCard });
             flipping = false;
             if (callback) callback();
-        }, 600); // duration of flip
+        }, 700); // duration of flip
     }
 
     function handleSwipe(event) {
