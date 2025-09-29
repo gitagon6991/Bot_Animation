@@ -62,9 +62,15 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'card';
             card.dataset.index = i;
             card.innerHTML = `
-                <img src="Logos/${filename}" alt="${filenameToTitle(filename)} Logo">
-                <h2>${filenameToTitle(filename)}</h2>
-                <p></p>
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="Logos/${filename}" alt="${filenameToTitle(filename)} Logo">
+                        <h2>${filenameToTitle(filename)}</h2>
+                    </div>
+                    <div class="card-back">
+                        <p>${filenameToTitle(filename)}</p>
+                    </div>
+                </div>
             `;
             container.appendChild(card);
         });
@@ -74,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentTopIndex = 0;
     const Z_STEP = 20;
     const SCALE_STEP = 0.05;
+    let flipping = false;
 
     function updateCardStack() {
         cards.forEach((card, i) => {
@@ -96,6 +103,12 @@ document.addEventListener('DOMContentLoaded', () => {
             card.style.transform = `translateZ(${z}px) scale(${scale})`;
             card.style.zIndex = cards.length - relativeIndex;
 
+            // Reset flip class if not top card
+            const cardInner = card.querySelector('.card-inner');
+            if (cardInner) {
+                cardInner.classList.remove('is-flipped');
+            }
+
             if (relativeIndex === 0) {
                 card.onclick = handleSwipe;
             } else {
@@ -104,25 +117,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function flipTopCard(callback) {
+        if (flipping) return;
+        flipping = true;
+        const topCard = cards[0];
+        const cardInner = topCard.querySelector('.card-inner');
+        cardInner.classList.add('is-flipped');
+
+        setTimeout(() => {
+            handleSwipe({ currentTarget: topCard });
+            flipping = false;
+            if (callback) callback();
+        }, 600); // duration of flip
+    }
+
     function handleSwipe(event) {
         const topCard = event.currentTarget;
 
-        // Animate the top card out
+        // Animate out (hidden, then reset)
+        topCard.style.transition = 'transform 0.4s cubic-bezier(0.68,-0.55,0.27,1.55)';
         topCard.style.transform += ' translate(800px, -200px) rotate(45deg)';
         topCard.style.opacity = 0;
         topCard.style.pointerEvents = 'none';
 
         setTimeout(() => {
-            // Move the swiped card to the end of the array for looping
+            // Move card to back of stack
             container.appendChild(topCard);
             cards.push(cards.shift());
-
-            // Reset transform so it can animate in again
+            // Reset transform for next flip
             topCard.style.transition = 'none';
             topCard.style.transform = '';
             void topCard.offsetWidth;
             topCard.style.transition = '';
-
             updateCardStack();
         }, 400);
     }
@@ -130,4 +156,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize
     createCards();
     updateCardStack();
+
+    // Flip cards automatically every 2 seconds
+    setInterval(() => {
+        flipTopCard();
+    }, 2000);
 });
